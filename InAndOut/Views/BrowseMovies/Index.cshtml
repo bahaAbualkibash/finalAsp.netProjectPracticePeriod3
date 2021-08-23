@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@model InAndOut.Models.ViewModels.BrowseMoviesDetialsViewModel;
+@using InAndOut.Database;
+
+<div class="container">
+    <div class="text-dark search ">
+        <div class="mb-4">
+            <div class=" container d-block">
+                <h4>Search Term:</h4>
+                <input class=" input form-control d-inline w-75" type="search" name="search" value="" />
+                <button class=" w-auto btn btn-success">Search</button>
+            </div>
+            <div class="filters">
+                <ul class=" text-left list-unstyled list-group list-group-horizontal">
+                    <li class=" w-auto ml-3">
+                        <h4>Quality:</h4>
+                        <select class="custom-select">
+                            <option value="720p">720p</option>
+                            <option value="1080p">1080p</option>
+                            <option value="2160p">2160p</option>
+                            <option value="4k">4k</option>
+                        </select>
+                    </li>
+                    <li class="w-auto ml-3">
+                        <h4>Genre:</h4>
+                        <select class="custom-select">
+                            @foreach (var genre in Model.Generes)
+                            {
+                                <option value="@genre.GenreName ">@genre.GenreName</option>
+                            }
+                        </select>
+                    </li>
+                    <li class="w-auto ml-2">
+                        <h4>Language:</h4>
+                        <select class="custom-select">
+                            @foreach (TblLanguage language in Model.Laguages)
+                            {
+                                <option value="@language.Language ">@language.Language</option>
+                            }
+                        </select>
+                    </li>
+                    <li class="w-auto ml-3">
+                        <h4>Year:</h4>
+                        <select class="custom-select">
+                            @for (var i = DateTime.Today.Year; i > DateTime.Today.AddYears(-50).Year; i--)
+                            {
+                                <option value="@i ">@i</option>
+
+                            }
+                        </select>
+                    </li>
+                    <li class="w-auto ml-2">
+                        <h4>Order By:</h4>
+                        <select class="custom-select">
+                            <option value="Quality">Quality</option>
+                            <option value="Genre">Genre</option>
+                            <option value="Language">Language</option>
+                            <option value="Year">Year</option>
+
+                        </select>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid p-0 m-0
+                align-items-center
+                justify-content-center d-flex"
+             style="min-height: 100vh;">
+
+            <!-- Row for the card-->
+            <div class="row w-100 p-0 w-0">
+
+                <!-- Column for card-->
+                @foreach (var item in Model.Films)
+                {
+                    <div class="card fl mx-auto mb-3" style="width:18rem;">
+                        <img class="card-img-top" src="https://media.geeksforgeeks.org/wp-content/uploads/20200529212604/geeks.png"
+                             alt="Card image cap">
+
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                @item.FilmName
+                            </h5>
+                            <p class="card-text">
+                                @item.FilmSynopsis
+                            </p>
+                            <a asp-controller="Home" asp-action="MovieDetails" asp-route-id="@item.FilmId" class="btn btn-info">
+                                Click me
+                            </a>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
