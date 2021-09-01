@@ -41,7 +41,7 @@ namespace InAndOut.Controllers
                 var movieName = movie.FilmName;
                 var movieYear = Convert.ToDateTime(movie.FilmReleaseDate).Year;
                
-                var omdbapi = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyBp0LOGQOdKyQZT3pgwXD7dzwigFNuG85I&part=snippet&q=" + movieName +" "+ movieYear + " trailer&type=video&maxResults=1";
+                var omdbapi = "https://www.googleapis.com/youtube/v3/search?key=&part=snippet&q=" + movieName +" "+ movieYear + " trailer&type=video&maxResults=1";
                 using (var httpClient = new HttpClient())
                 {
                     using (var response = await httpClient.GetAsync(omdbapi))
