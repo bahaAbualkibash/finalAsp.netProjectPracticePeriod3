@@ -1,0 +1,74 @@
+﻿@model InAndOut.Models.ViewModels.CreateMovieViewModel
+
+@{
+    ViewData["Title"] = "Add Movie";
+}
+
+<h4>Add Movie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="MovieName" class="control-label"></label>
+                <input asp-for="MovieName" class="form-control" />
+                <span asp-validation-for="MovieName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MovieYearOfRelease" class="control-label"></label>
+                <input asp-for="MovieYearOfRelease" class="form-control" />
+                <span asp-validation-for="MovieYearOfRelease" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MoviePrice" class="control-label"></label>
+                <input asp-for="MoviePrice" class="form-control" />
+                <span asp-validation-for="MoviePrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Search" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@if (ViewBag.Result != null)
+{
+    <div class="container-fluid p-0 m-0
+                align-items-center
+                justify-content-center d-flex"
+         style="min-height: 100vh;">
+        <div class="row w-100 p-0 w-0">
+
+            @foreach (var result in ViewBag.Result)
+            {
+                <div class="card fl mx-auto mb-3" style="width:18rem;">
+                    @if (!result.Poster.Equals("N/A"))
+                    {
+                        <img class="card-img-top" src="@result.Poster"
+                             alt="Card image cap">
+                    }
+                    else
+                    {
+                        <img class="card-img-top" src="~/img/2152283.jpg"
+                             alt="Card image cap">
+                    }
+                    <div class="card-bod flex-column d-flex">
+                        <h5 class="card-title">
+                            @result.Title
+                        </h5>
+                        @using (Html.BeginForm("Submit", "Movie", new { Id = result.imdbID }, FormMethod.Post))
+                        {
+                        <button class="btn btn-success align-self-end mt-auto mb-3 btn-block ">Select</button>  
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

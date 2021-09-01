@@ -443,3 +443,4 @@ C:\Users\bahar\source\repos\InAndOut\InAndOut\obj\Debug\net5.0\ref\InAndOut.dll
 C:\Users\bahar\source\repos\InAndOut\InAndOut\obj\Debug\net5.0\InAndOut.pdb
 C:\Users\bahar\source\repos\InAndOut\InAndOut\obj\Debug\net5.0\InAndOut.genruntimeconfig.cache
 C:\Users\bahar\source\repos\InAndOut\InAndOut\obj\Debug\net5.0\InAndOut.csproj.AssemblyReference.cache
+C:\Users\bahar\source\repos\InAndOut\InAndOut\obj\Debug\net5.0\Razor\Views\Movie\Create.cshtml.g.cs

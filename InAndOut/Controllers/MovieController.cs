@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using InAndOut.Database;
+using InAndOut.Models.api;
 using InAndOut.Models.Repository;
 using InAndOut.Models.ViewModels;
 using InAndOut.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace InAndOut.Controllers
@@ -36,6 +39,10 @@ namespace InAndOut.Controllers
         }
         public IActionResult Index(int id)
         {
+            if(id == 0)
+            {
+                return RedirectToAction("Index","Home");
+            }
             var film = _film.Get(id);
             var languages = _language.getlist(id);
             var genres = _genre.getlist(film.FilmId);
@@ -122,6 +129,86 @@ namespace InAndOut.Controllers
                 }
             }
             return RedirectToAction("Index","Home"); 
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(CreateMovieViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var OMDBApi = "http://www.omdbapi.com/?apikey=3e74c857&s=" + model.MovieName + "&type=movie&y=" + model.MovieYearOfRelease;
+                using(var httpClient = new HttpClient())
+                {
+                    using(var response = await httpClient.GetAsync(OMDBApi))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        CreateMovieApi.Rootobject obj = JsonConvert.DeserializeObject<CreateMovieApi.Rootobject>(apiResponse);
+                        ViewBag.Result = obj.Search;
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Submit(string id)
+        {
+                var themoviedb = @$"https://api.themoviedb.org/3/movie/{id}?api_key=2bf25c71b9c2f26659f6365cf3fd977e&append_to_response=videos";
+                using (var httpClient = new HttpClient())
+                {
+                    using (var response = await httpClient.GetAsync(themoviedb))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        MovieDetails.Rootobject obj = JsonConvert.DeserializeObject<MovieDetails.Rootobject>(apiResponse);
+                    TblFilm film = new TblFilm();
+                    film.FilmName = obj.title;
+                    film.FilmBoxOfficeDollars = obj.revenue;
+                    film.FilmBudgetDollars = obj.revenue;
+                    film.FilmReleaseDate = Convert.ToDateTime(obj.release_date);
+                    film.FilmRunTimeMinutes = obj.runtime;
+                    film.FilmSynopsis = obj.overview;
+                    foreach(var genre in obj.genres)
+                    {
+                        // check if genre already exsist
+                        //if does not exsist add it do genre table 
+                    }
+                    // to do send to db
+                }
+            }
+             themoviedb = @$"https://api.themoviedb.org/3/movie/{id}/credits?api_key=2bf25c71b9c2f26659f6365cf3fd977e&language=en-U";
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(themoviedb))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    CreditDetials.Rootobject obj = JsonConvert.DeserializeObject<CreditDetials.Rootobject>(apiResponse);
+                    // to do add actors to film
+                }
+            }
+            themoviedb = @$"https://api.themoviedb.org/3/movie/{id}/videos?api_key=2bf25c71b9c2f26659f6365cf3fd977e&language=en-US";
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync(themoviedb))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    VideosMovie.Rootobject obj = JsonConvert.DeserializeObject<VideosMovie.Rootobject>(apiResponse);
+                    // add trailer to film
+                }
+            }
+
+            return View();
         }
     }
 }

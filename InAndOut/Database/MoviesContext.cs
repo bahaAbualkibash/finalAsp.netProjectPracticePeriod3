@@ -190,5 +190,7 @@ namespace InAndOut.Database
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 
+        public DbSet<InAndOut.Models.ViewModels.CreateMovieViewModel> CreateMovieViewModel { get; set; }
+
     }
 }

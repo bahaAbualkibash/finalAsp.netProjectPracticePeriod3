@@ -47,9 +47,9 @@ namespace InAndOut.Controllers
                     using (var response = await httpClient.GetAsync(omdbapi))
                     {
                         string apiResponse = await response.Content.ReadAsStringAsync();
-                        // MovieApi.Rootobject movieFromApi = JsonConvert.DeserializeObject<MovieApi.Rootobject>(apiResponse);
-                        //  movie.FilmImage = movieFromApi.Poster;
-                        //  _movies.Update(movie);
+                         MovieApi.Rootobject movieFromApi = JsonConvert.DeserializeObject<MovieApi.Rootobject>(apiResponse);
+                          movie.FilmImage = movieFromApi.Poster;
+                          _movies.Update(movie);
                         TrailerApi.Rootobject trailerVideoApi = JsonConvert.DeserializeObject<TrailerApi.Rootobject>(apiResponse);
                         movie.FilmTrailer = trailerVideoApi.items[0].id.videoId;
                         _movies.Update(movie);
