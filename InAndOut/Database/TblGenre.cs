@@ -15,10 +15,6 @@ namespace InAndOut.Database
         public long GenreId { get; set; }
         [StringLength(50)]
         public string GenreName { get; set; }
-        public int? FilmId { get; set; }
-
-        [ForeignKey(nameof(FilmId))]
-        [InverseProperty(nameof(TblFilm.TblGenres))]
-        public virtual TblFilm Film { get; set; }
+        
     }
 }

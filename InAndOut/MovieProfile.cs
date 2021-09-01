@@ -13,6 +13,9 @@ namespace InAndOut
         public MovieProfile()
         {
             CreateMap<TblFilm, ListMoviesViewModel>();
+            CreateMap<TblFilm, EditMovieViewModel>();
+            CreateMap<TblLanguage, EditMovieViewModel>();
+
         }
     }
 }

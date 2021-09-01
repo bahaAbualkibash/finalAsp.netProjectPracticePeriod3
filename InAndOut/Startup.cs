@@ -4,6 +4,7 @@ using InAndOut.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,13 +30,14 @@ namespace InAndOut
         {
             services.AddAutoMapper(typeof(Startup));
             services.AddDbContext<MoviesContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<MoviesContext>();
             services.AddScoped(typeof(IData<>), typeof(DatabaseRepo<>));
             services.AddScoped<IDbService<TblFilm>,FilmService>();
             services.AddScoped<IDbService<TblGenre>, GenreService>();
             services.AddScoped<IDbService<TblLanguage>, LanguageService>();
-            services.AddScoped<IActorsService, ActorsService>();
-
-
+            services.AddScoped<IJunctionService<TblActorsMovie,TblActor>, ActorsService>();
+            services.AddScoped<IJunctionService<TblGenreMovies, TblGenre>, GenreMovieService>();
+            services.AddScoped<IJunctionService<TblLanguagesMovies, TblLanguage>, LanguageMovieService>();
 
             services.AddHttpContextAccessor();
             services.AddControllersWithViews();
@@ -56,6 +58,8 @@ namespace InAndOut
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseRouting();
 

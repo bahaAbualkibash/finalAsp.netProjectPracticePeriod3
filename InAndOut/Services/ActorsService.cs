@@ -8,20 +8,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InAndOut.Services
 {
-    public class ActorsService : IActorsService
+    public class ActorsService : IJunctionService<TblActorsMovie,TblActor>
     {
         private IData<TblActorsMovie> _data;
-        private IData<TblActor> _actors;
+        private IData<TblActor> _actor;
 
         public ActorsService(IData<TblActorsMovie> data,IData<TblActor> actor)
         {
             _data = data;
-            _actors = actor;
+            _actor = actor;
         }
-        public void Delete(int id)
+        public void Delete(TblActorsMovie item)
         {
-            
-            throw new NotImplementedException();
+            _data.Delete(item);
         }
 
         public TblActorsMovie Get(int id)
@@ -29,7 +28,11 @@ namespace InAndOut.Services
             throw new NotImplementedException();
         }
 
-
+        public List<TblActor> getAlllist()
+        {
+            var list = _actor.GetList().ToList();
+            return list;
+        }
 
         public List<TblActorsMovie> getlist(int id)
         {
@@ -45,14 +48,22 @@ namespace InAndOut.Services
         {
             
         }
-        public TblActorsMovie Search(int id)
+        public TblActorsMovie Search(int FilmId, int ActorId,int oldActorId)
         {
-            throw new NotImplementedException();
+            return getlist(FilmId).Where(item => item.ActorId == oldActorId).FirstOrDefault(); 
         }
 
-        public void Update(int id)
+        public void Update(int FilmId,int ActorId,int oldActorId)
         {
-            throw new NotImplementedException();
+            var actor = Search(FilmId, ActorId,oldActorId);
+
+            if ( actor != null)
+            {
+                actor.ActorId = ActorId;
+                actor.FilmId = FilmId;
+                _data.Update(actor);
+
+            }
         }
     }
 }

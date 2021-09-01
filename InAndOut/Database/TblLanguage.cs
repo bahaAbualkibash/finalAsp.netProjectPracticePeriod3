@@ -16,11 +16,7 @@ namespace InAndOut.Database
         public int LanguageId { get; set; }
         [StringLength(255)]
         public string Language { get; set; }
-        [Column("FilmID")]
-        public int? FilmId { get; set; }
 
-        [ForeignKey(nameof(FilmId))]
-        [InverseProperty(nameof(TblFilm.TblLanguages))]
-        public virtual TblFilm Film { get; set; }
+
     }
 }

@@ -12,6 +12,8 @@ namespace InAndOut.Models.ViewModels
         public string FilmName { get; set; }
         public string FilmSynopsis { get; set; }
 
+        public string FilmImage { get; set; }
+
         //TO-Do 
         // images
 

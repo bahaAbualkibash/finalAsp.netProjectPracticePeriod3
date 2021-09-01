@@ -1,12 +1,14 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using InAndOut.Models.ViewModels;
 
 #nullable disable
 
 namespace InAndOut.Database
 {
-    public partial class MoviesContext : DbContext
+    public partial class MoviesContext : IdentityDbContext
     {
         public MoviesContext()
         {
@@ -43,6 +45,7 @@ namespace InAndOut.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasAnnotation("Relational:Collation", "Arabic_CI_AS");
 
             modelBuilder.Entity<TblActor>(entity =>
@@ -61,6 +64,30 @@ namespace InAndOut.Database
                     .WithMany()
                     .HasForeignKey(d => d.FilmId)
                     .HasConstraintName("FK_Tbl_Actors_Movies_tblFilm");
+            });
+            modelBuilder.Entity<TblGenreMovies>(entity =>
+            {
+                entity.HasOne(d => d.Genre)
+                    .WithMany()
+                    .HasForeignKey(d => d.GenreId)
+                    .HasConstraintName("FK_Tbl_Genres_Movies_tblGenre");
+
+                entity.HasOne(d => d.Film)
+                    .WithMany()
+                    .HasForeignKey(d => d.FilmId)
+                    .HasConstraintName("FK_Tbl_Genres_Movies_tblFilm");
+            });
+            modelBuilder.Entity<TblLanguagesMovies>(entity =>
+            {
+                entity.HasOne(d => d.Language)
+                    .WithMany()
+                    .HasForeignKey(d => d.LanguageId)
+                    .HasConstraintName("FK_Tbl_Languages_Movies_tblLanguage");
+
+                entity.HasOne(d => d.Film)
+                    .WithMany()
+                    .HasForeignKey(d => d.FilmId)
+                    .HasConstraintName("FK_Tbl_Languages_Movies_tblFilm");
             });
 
             modelBuilder.Entity<TblCast>(entity =>
@@ -114,20 +141,15 @@ namespace InAndOut.Database
 
                 entity.Property(e => e.GenreName).IsUnicode(false);
 
-                entity.HasOne(d => d.Film)
-                    .WithMany(p => p.TblGenres)
-                    .HasForeignKey(d => d.FilmId)
-                    .HasConstraintName("FK_tblGenre_tblFilm");
+     
             });
 
             modelBuilder.Entity<TblLanguage>(entity =>
             {
                 entity.Property(e => e.LanguageId).ValueGeneratedNever();
+                entity.Property(e => e.Language).IsUnicode(false);
 
-                entity.HasOne(d => d.Film)
-                    .WithMany(p => p.TblLanguages)
-                    .HasForeignKey(d => d.FilmId)
-                    .HasConstraintName("FK_tblLanguage_tblFilm");
+              
             });
 
             modelBuilder.Entity<TblStudio>(entity =>
@@ -167,5 +189,6 @@ namespace InAndOut.Database
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
     }
 }

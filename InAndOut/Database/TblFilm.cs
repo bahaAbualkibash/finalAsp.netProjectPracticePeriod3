@@ -15,8 +15,8 @@ namespace InAndOut.Database
         {
             TblCasts = new HashSet<TblCast>();
             TblCountries = new HashSet<TblCountry>();
-            TblGenres = new HashSet<TblGenre>();
-            TblLanguages = new HashSet<TblLanguage>();
+            //TblGenres = new HashSet<TblGenre>();
+            //TblLanguages = new HashSet<TblLanguage>();
             TblStudios = new HashSet<TblStudio>();
             TblUsers = new HashSet<TblUser>();
         }
@@ -53,6 +53,11 @@ namespace InAndOut.Database
         public int? FilmActorId { get; set; }
         [Column("FilmCastID")]
         public int? FilmCastId { get; set; }
+        [Column("FilmImage")]
+        public string FilmImage { get; set;}
+
+        [Column("FilmTrailer")]
+        public string FilmTrailer { get; set; }
 
         [ForeignKey(nameof(FilmActorId))]
         [InverseProperty(nameof(TblActor.TblFilms))]
@@ -64,10 +69,6 @@ namespace InAndOut.Database
         public virtual ICollection<TblCast> TblCasts { get; set; }
         [InverseProperty(nameof(TblCountry.Film))]
         public virtual ICollection<TblCountry> TblCountries { get; set; }
-        [InverseProperty(nameof(TblGenre.Film))]
-        public virtual ICollection<TblGenre> TblGenres { get; set; }
-        [InverseProperty(nameof(TblLanguage.Film))]
-        public virtual ICollection<TblLanguage> TblLanguages { get; set; }
         [InverseProperty(nameof(TblStudio.Film))]
         public virtual ICollection<TblStudio> TblStudios { get; set; }
         [InverseProperty(nameof(TblUser.Film))]

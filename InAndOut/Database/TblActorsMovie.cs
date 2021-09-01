@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InAndOut.Database
 {
-    [Keyless]
     [Table("Tbl_Actors_Movies")]
     public partial class TblActorsMovie
     {
+        [Key]
+        [Column("ActorFilmID")]
+        public int ActorFilmId { get; set; }
+
         [Column("FilmID")]
         public int? FilmId { get; set; }
         [Column("ActorID")]

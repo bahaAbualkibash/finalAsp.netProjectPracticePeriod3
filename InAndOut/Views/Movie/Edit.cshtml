@@ -1,0 +1,218 @@
+﻿@model InAndOut.Models.ViewModels.EditMovieViewModel;
+@using InAndOut.Database; 
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+            <div class="card p-3">
+                <div class="e-navlist e-navlist--active-bg">
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Overview</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-crud-users" target="__blank"><i class="fa fa-fw fa-th mr-1"></i><span>CRUD</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-edit-profile-page" target="__blank"><i class="fa fa-fw fa-cog mr-1"></i><span>Settings</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="e-profile">
+                                <div class="row">
+                                    <div class="col-12 col-sm-auto mb-3">
+                                        <div class="mx-auto" style="width: 140px;">
+                                            <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px;">
+                                                <img src="@Model.FilmImage" style="width: 140px; height:140px; " alt="@Model.FilmName Image" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                            <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">@Model.FilmName</h4>
+                                            <div class="text-muted"><small>@Model.FilmReleaseDate</small></div>
+                                            <div class="mt-2">
+                                                <button class="btn btn-primary" type="button">
+                                                    <i class="fa fa-fw fa-camera"></i>
+                                                    <span>Change Photo</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                </ul>
+                                <div class="tab-content pt-3">
+                                    <div class="tab-pane active">
+                                        <form method="post" class="form">
+                                            <input asp-for="FilmId" value="@Model.FilmId" hidden />
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label>Name</label>
+                                                                <input asp-for="FilmName" class="form-control" type="text" placeholder="@Model.FilmName">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <div class="form-group">
+                                                                <label>About</label>
+                                                                <textarea class="form-control" rows="5" asp-for="@Model.FilmSynopsis">@Model.FilmSynopsis</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <div class="form-group">
+                                                                <label>Price</label>
+                                                                <input class="form-control" type="text" asp-for="@Model.FilmPrice" placeholder="@Model.FilmPrice" step="0.01">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col mb-3">
+                                                            <div class="form-group">
+                                                                <label>Release Date</label>
+                                                                <input class="form-control" type="date" asp-for="@Model.FilmReleaseDate" placeholder="@Model.FilmReleaseDate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <div class="form-group">
+                                                                <label>Movie Run Time Minutes</label>
+                                                                <input type="number" step="1" class="form-control" asp-for="@Model.FilmRunTimeMinutes">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6 mb-3">
+                                                    <div class="mb-2"><b>Change Languages</b></div>
+
+                                                    @for (var i = 0; i < Model.Languages.Count; i++)
+                                                    {
+                                                        <div class="row">
+
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Language @(i + 1)</label>
+                                                                    <select asp-for="Languages[i].LanguageId" class="form-control">
+                                                                        @foreach (var lang in ViewBag.AllLanguages)
+                                                                        {
+                                                                            if (lang.LanguageId == Model.Languages[i].LanguageId)
+                                                                            {
+                                                                                <option class="form-control" value="@lang.LanguageId" selected>@lang.Language</option>
+                                                                                continue;
+                                                                            }
+                                                                            <option class="form-control" value="@lang.LanguageId">@lang.Language</option>
+
+                                                                        }
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+
+                                                </div>
+                                                <div class="col-12 col-sm-6 mb-3">
+                                                    <div class="mb-2"><b>Change Languages</b></div>
+
+                                                    @for (var i = 0; i < Model.Actors.Count; i++)
+                                                    {
+                                                        <div class="row">
+
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Acotr @Model.Actors[i].Actor.ActorName</label>
+                                                                    <select asp-for="Actors[i].ActorId" class="form-control">
+                                                                        @foreach (var actor in ViewBag.AllActors)
+                                                                        {
+                                                                            if (actor.ActorId == Model.Actors[i].ActorId)
+                                                                            {
+                                                                                <option class="form-control" value="@actor.ActorId" selected>@actor.ActorName</option>
+                                                                                continue;
+                                                                            }
+                                                                            <option class="form-control" value="@actor.ActorId">@actor.ActorName</option>
+
+                                                                        }
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 col-sm-6 mb-3">
+                                                    <div class="mb-2"><b>Change Genre</b></div>
+
+                                                    @for (var i = 0; i < Model.Genres.Count; i++)
+                                                    {
+                                                        <div class="row">
+
+                                                            <div class="col">
+                                                                <div class="form-group">
+                                                                    <label>Genre @(i + 1)</label>
+                                                                    <select asp-for="Genres[i].GenreId" class="form-control">
+                                                                        @foreach (var genre in ViewBag.AllGenres)
+                                                                        {
+                                                                            if (genre.GenreId == Model.Genres[i].GenreId)
+                                                                            {
+                                                                        <option class="form-control" value="@genre.GenreId" selected>@genre.GenreName</option>
+                                                                                continue;
+                                                                            }
+                                                                            <option class="form-control" value="@genre.GenreId">@genre.GenreName</option>
+
+                                                                        }
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col d-flex justify-content-end">
+                                                    <button asp-action="Edit" class="btn btn-primary" type="submit">Save Changes</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title font-weight-bold">Support</h6>
+                            <p class="card-text">Get fast, free help from our friendly assistants.</p>
+                            <button type="button" class="btn btn-primary">Contact Us</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

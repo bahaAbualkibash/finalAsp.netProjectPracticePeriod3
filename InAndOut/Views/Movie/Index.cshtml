@@ -12,11 +12,11 @@
                 <!-- Post header-->
                 <header class="mb-4">
                     <!-- Post title-->
-                    <h1 class="fw-bolder mb-1">@ViewBag.Film.FilmName (@DateTime.ParseExact(ViewBag.Film.FilmReleaseDate.ToString(), "M/dd/yyyy hh:mm:ss tt", null).Year)</h1>
-                    <!-- Post categories-->@foreach (var item in ViewBag.Genres) {<a style="font-size:20px" class="badge badge-pill badge-info ml-2 mt-2 text-white  ">@item.GenreName</a>}
+                    <h1 class="fw-bolder mb-1">@ViewBag.Film.FilmName (@Convert.ToDateTime(ViewBag.Film.FilmReleaseDate).Year)</h1>
+                    <!-- Post categories-->@foreach (var item in ViewBag.Genres) {<a style="font-size:20px" class="badge badge-pill badge-info ml-2 mt-2 text-white  ">@item.Genre.GenreName</a>}
                 </header>
-                <!-- Preview image figure-->
-                <figure class="mb-4"><img class="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..."></figure>
+                <!-- Preview film trailer-->
+                <embed allow="fullscreen;"  width="720" height="400" class=" rounded" src="https://www.youtube.com/embed/@ViewBag.Film.FilmTrailer" alt="Movie Trailer">
                 <!-- Post content-->
                 <section class="mb-5">
                     <h2 class="fw-bolder mb-4 mt-5">About @ViewBag.Film.FilmName</h2>
@@ -101,7 +101,7 @@
                             <ul class="list-unstyled mb-0">
                                 @foreach (var item in ViewBag.Language)
                                 {
-                                    <li class="text-black-50">@item.Language</li>
+                                    <li class="text-black-50">@item.Language.Language</li>
                                 }
                                 
                             </ul>

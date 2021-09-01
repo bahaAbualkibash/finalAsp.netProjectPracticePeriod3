@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Admin Portal";
+}
+
+<h1>Admin Portal</h1>
+<div class="container">
+    <div class="row">
+        <div style="width: 30%; height: 30%;">
+            <a asp-controller="Adminstrator" asp-action="CreateRole" class="btn btn-block btn-outline-primary">Create Roles</a>
+        </div>
+        <div style="width: 30%; height: 30%; " class="ml-3"><a asp-controller="Adminstrator" asp-action="AddOrRemoveAdmin" class="btn btn-block btn-outline-primary">Add Or Remove Admins</a></div>
+        <div style="width: 30%; height: 30%; " class="ml-3"><a asp-controller="Adminstrator" asp-action="RemoveUsers" class="btn btn-block btn-outline-primary">Remove Users</a></div>
+    </div>
+</div>

@@ -1,5 +1,7 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@inject SignInManager<IdentityUser> signInManager;
+
+@{
+    ViewData["Title"] = "Movie Details";
 }
 @model InAndOut.Models.ViewModels.BrowseMoviesDetialsViewModel;
 @using InAndOut.Database;
@@ -77,19 +79,28 @@
                 @foreach (var item in Model.Films)
                 {
                     <div class="card fl mx-auto mb-3" style="width:18rem;">
-                        <img class="card-img-top" src="https://media.geeksforgeeks.org/wp-content/uploads/20200529212604/geeks.png"
+                        <img class="card-img-top" src="@item.FilmImage"
                              alt="Card image cap">
 
-                        <div class="card-body">
+                        <div class="card-bod flex-column d-flex">
                             <h5 class="card-title">
                                 @item.FilmName
                             </h5>
                             <p class="card-text">
                                 @item.FilmSynopsis
                             </p>
-                            <a asp-controller="Home" asp-action="MovieDetails" asp-route-id="@item.FilmId" class="btn btn-info">
-                                Click me
+                            <a asp-controller="Movie" asp-action="Index" asp-route-id="@item.FilmId" class="btn btn-success align-self-end mt-auto mb-3 btn-block ">
+                                Show Details
                             </a>
+                            @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Home" asp-action="Edit" asp-route-id="@item.FilmId" class="btn btn-info align-self-end mt-auto mb-3 btn-block ">
+                                    Edit Movie Details
+                                </a>
+                                <a asp-controller="Home" asp-action="Remove" asp-route-id="@item.FilmId" class="btn btn-danger align-self-end mt-auto mb-3 btn-block ">
+                                    Remove Movie
+                                </a>
+                            }
                         </div>
                     </div>
                 }

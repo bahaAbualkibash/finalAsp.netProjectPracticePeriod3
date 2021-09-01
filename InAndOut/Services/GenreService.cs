@@ -41,9 +41,9 @@ namespace InAndOut.Services
             _data.Insert(item);
         }
 
-        public void Update(int id)
+        public void Update(TblGenre item)
         {
-            _data.Update(Search(id));
+            _data.Update(item);
         }
     }
 }
